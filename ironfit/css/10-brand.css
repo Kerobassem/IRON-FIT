@@ -1,0 +1,125 @@
+/* =====================================================================
+   IRON FIT · Brand layer (Brand Identity Guidelines v1.0)
+   Forge / Carbon / Graphite / Steel · Silver = iron · Red = effort (rare)
+   Display: Saira 900 italic · Label: Saira Condensed · Body: Manrope · Arabic: Cairo
+   Graphic language: 12° slant, cut corners, split ring, bar rule, outlined numerals
+   ===================================================================== */
+:root{
+  --f-label:'Saira Condensed','Cairo',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --cut:14px;
+  --r:4px;
+}
+html[lang="ar"]{--f-label:'Cairo',sans-serif}
+
+/* ---- type ---- */
+h1,h2,h3,h4,.num{font-weight:900;letter-spacing:.005em}
+h1{font-size:clamp(2.5rem,6.4vw,4.7rem);line-height:.96}
+h2{font-size:clamp(1.8rem,3.9vw,2.9rem);line-height:1}
+h3{font-size:1.3rem;font-weight:800}
+h4{font-size:1.05rem;font-weight:800}
+.num{font-weight:800}
+.btn,.lbl,.chip,.seg button,.pubnav a,.navi,.bn,.tbl th,.kpi .l,.legend,.anat figcaption,.eyebrow,.stat .muted{font-family:var(--f-label)}
+.btn{font-weight:700;letter-spacing:.07em;text-transform:uppercase;font-size:14px}
+html[lang="ar"] .btn{letter-spacing:0;text-transform:none;font-size:15px}
+.chip{letter-spacing:.05em;font-size:12.5px}
+.xs.muted,.caption{font-family:var(--f-mono)}
+.wordmark{font-weight:900;letter-spacing:.03em}
+
+/* ---- shape: angular, not pill ---- */
+.card,.excard,.choice,.fi,.setb,.seg,.note,.empty,.dz,.usercard,.pop,.float,.macro div,.photo,.cmp,.ibprev{border-radius:var(--r)}
+.btn,input,select,textarea,.seg button,.chip,.navi{border-radius:3px}
+.sheet{border-radius:8px}
+.card{border-top:2px solid var(--line)}
+.grid>.card:hover,.stat:hover{border-top-color:var(--red)}
+
+/* the cut corner: opposite corners chamfered at 45° (CTAs, hero cards, photo frames) */
+.btn.red,.cta,.hero .vis>.card,.cmp{
+  border-radius:0;
+  clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut));
+}
+.btn.red.sm{--cut:9px}
+.herologo{border-radius:0;box-shadow:none;width:min(78%,300px)}
+.btn.red:hover{transform:translateY(-2px)}
+
+/* ---- the bar rule: eyebrows framed by the thin red rule, sections divided by a barbell-weighted line ---- */
+.eyebrow{display:flex;align-items:center;gap:12px;letter-spacing:.2em;font-weight:700}
+.eyebrow::before{content:"";width:34px;height:2px;background:var(--red);flex:none}
+html[lang="ar"] .eyebrow{letter-spacing:0}
+.section{position:relative}
+.section::before{content:"";position:absolute;inset:0 0 auto;height:4px;
+  background:linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat,
+             linear-gradient(var(--silver),var(--silver)) left center/84px 4px no-repeat,
+             linear-gradient(var(--red),var(--red)) left center/28px 4px no-repeat}
+[dir="rtl"] .section::before{background-position:center,right center,right center}
+.section>*{position:relative;z-index:1}
+
+/* ---- outlined numerals: section numbers, steps, static stats (solid fill is reserved for live data) ---- */
+.section[data-n]::after{content:attr(data-n);position:absolute;top:30px;inset-inline-end:0;z-index:0;pointer-events:none;
+  font:italic 900 clamp(4rem,11vw,8rem)/1 'Saira',sans-serif;color:transparent;-webkit-text-stroke:1.5px var(--line)}
+.stat .num,#sec-how .num{color:transparent;-webkit-text-stroke:1.6px var(--fg)}
+#sec-how .num{-webkit-text-stroke-color:var(--red)}
+html[lang="ar"] .section[data-n]::after{font-style:normal}
+@media (max-width:600px){.section[data-n]::after{display:none}}
+
+/* ---- tagline marquee ---- */
+.marq .mt{font-family:var(--f-label);font-weight:800;letter-spacing:.3em;font-size:1.15rem}
+.marq .mt i{border-radius:0;transform:skewX(-12deg);width:7px;height:14px}
+
+/* ---- split ring: silver track, red fill, always one break ---- */
+.ring circle:first-child{stroke:var(--silver);stroke-opacity:.2}
+
+/* ---- inputs focus ---- */
+input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+
+/* ---- footer ---- */
+.foot{position:relative}
+.foot::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:linear-gradient(var(--silver),var(--silver)) left/84px 4px no-repeat,linear-gradient(var(--red),var(--red)) left/28px 4px no-repeat}
+
+/* =====================================================================
+   Anatomy: layered muscle rendering (base · volume shade · fibre texture)
+   ===================================================================== */
+.anat{gap:6px}
+.anat figure{flex:1 1 170px;max-width:270px}
+.anat svg{filter:drop-shadow(0 12px 18px rgba(0,0,0,.35))}
+.sil{fill:color-mix(in srgb,var(--sil) 80%,#000);stroke:color-mix(in srgb,var(--fg) 14%,transparent);stroke-width:.8}
+.m{stroke:color-mix(in srgb,#000 55%,var(--sil));stroke-width:.7;stroke-linejoin:round}
+.m.d{fill:color-mix(in srgb,var(--base) 60%,var(--sil));cursor:default}
+.m.p{filter:drop-shadow(0 0 3px var(--glow))}
+.m.sel{stroke:var(--fg);stroke-width:1.5}
+.sh,.fb{pointer-events:none;stroke:none}
+.sh{fill:url(#anSh)}
+.absl{stroke:color-mix(in srgb,var(--fg) 20%,transparent);stroke-width:.8;stroke-linecap:round;stroke-linejoin:round;fill:none;pointer-events:none}
+.absl.sp{stroke-dasharray:.1 4.4;stroke-width:2.4}
+ellipse.absl{fill:color-mix(in srgb,var(--fg) 14%,transparent);stroke:none}
+.legend i{border-radius:0;transform:skewX(-12deg)}
+
+/* =====================================================================
+   Logo lockups (vector) · scroll progress · pillars · active nav
+   ===================================================================== */
+.lm{display:block;overflow:visible;flex:none}
+.lk{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.lk .lm{filter:drop-shadow(0 10px 28px rgba(229,57,53,.35))}
+.lk-w{font:italic 900 clamp(1.6rem,4vw,2.3rem)/1 'Saira',sans-serif;letter-spacing:.04em;color:var(--silver);margin-top:6px}
+.lk-w b{color:#e50920}
+.lk-t{font:700 .72rem 'Saira Condensed',sans-serif;letter-spacing:.34em;color:var(--muted)}
+.biglogo{width:min(100%,320px);border-radius:0}
+.lm-a{stroke-dasharray:1;animation:lmd 1.5s .15s cubic-bezier(.2,.7,.2,1) both}
+@keyframes lmd{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+#splash .lk{animation:spl 1.1s cubic-bezier(.2,.7,.2,1) both}
+#splash .lk-w{color:#c5c7ca}
+.logo .lm{height:38px;width:auto}
+
+#sp{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--red);z-index:300;pointer-events:none}
+[dir="rtl"] #sp{transform-origin:100% 50%;left:auto;right:0}
+.pubnav a.on{color:var(--fg);box-shadow:0 2px 0 var(--red)}
+
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0;margin-top:8px;border-block:1px solid var(--line)}
+.pillar{padding:34px 28px 36px;border-inline-end:1px solid var(--line);position:relative;overflow:hidden}
+.pillar:last-child{border-inline-end:0}
+.pillar .big{font:italic 900 clamp(2.2rem,4.4vw,3.2rem)/1 'Saira',sans-serif;color:transparent;-webkit-text-stroke:1.6px var(--fg);transition:color .3s,-webkit-text-stroke-color .3s}
+.pillar:hover .big{color:var(--red);-webkit-text-stroke-color:var(--red)}
+.pillar h4{margin:18px 0 8px;font-family:var(--f-label);font-weight:700;letter-spacing:.12em;font-size:.95rem}
+.pillar::after{content:"";position:absolute;inset:auto 0 0;height:3px;background:var(--red);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s}
+.pillar:hover::after{transform:scaleX(1)}
+html[lang="ar"] .pillar .big{font-style:normal;font-family:'Cairo',sans-serif}

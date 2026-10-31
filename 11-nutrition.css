@@ -1,0 +1,14 @@
+/* Nutrition upgrades + icon tiles */
+.fpic{border-radius:0;clip-path:polygon(22% 0,100% 0,100% 78%,78% 100%,0 100%,0 22%)}
+.fpic svg{display:block}
+.splitbar{display:flex;height:8px;gap:2px;margin-top:12px;overflow:hidden}
+.splitbar i{display:block;transform:skewX(-12deg);transition:width .6s}
+.glasses{display:flex;gap:4px;margin-top:14px;flex-wrap:wrap;align-items:center}
+.glasses span{color:var(--line);display:inline-flex;transition:color .3s,transform .3s}
+.glasses span.on{color:#38bdf8;transform:translateY(-2px)}
+.glasses span.on svg{fill:rgba(56,189,248,.28)}
+.mic{display:inline-grid;place-items:center;width:30px;height:30px;color:var(--red-ink);background:var(--red-soft);clip-path:polygon(25% 0,100% 0,100% 75%,75% 100%,0 100%,0 25%)}
+.mshare{margin:10px 0 2px}.mshare .bar{height:4px}
+.fcats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.fcats .chip{cursor:pointer;border-radius:3px}
+.navi svg,.bn svg{stroke-width:1.9}

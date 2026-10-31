@@ -1,0 +1,48 @@
+/* ---- fx ---- */
+.logoglow{position:relative;display:grid;place-items:center;margin-bottom:22px}
+.logoglow::before{content:"";position:absolute;width:72%;aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,var(--glow),transparent 70%);filter:blur(18px);animation:glowp 3.6s ease-in-out infinite}
+.herologo{position:relative;width:min(70%,250px);border-radius:26px;box-shadow:0 18px 60px rgba(229,57,53,.28),0 0 0 1px rgba(255,255,255,.06);animation:bob 6s ease-in-out infinite}
+@keyframes glowp{50%{opacity:.45;transform:scale(1.12)}}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-.6deg)}}
+.marq{overflow:hidden;border-block:1px solid var(--line);background:var(--bg-2);margin-block:8px}
+.marq .mt{display:flex;gap:28px;width:max-content;padding:14px 0;animation:mq 28s linear infinite;font-family:var(--f-head);font-style:italic;font-weight:800;font-size:1.3rem;letter-spacing:.14em;color:var(--muted)}
+.marq .mt i{width:8px;height:8px;border-radius:50%;background:var(--red);align-self:center;flex:none}
+@keyframes mq{to{transform:translateX(-50%)}}
+[dir=rtl] .marq .mt{animation-direction:reverse}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--d,0)*70ms)}
+.rv.in{opacity:1;transform:none}
+.hero{position:relative;--mx:50%;--my:30%}
+.hero::before{content:"";position:absolute;inset:-40px -20px;pointer-events:none;background:radial-gradient(420px circle at var(--mx) var(--my),var(--red-soft),transparent 65%);z-index:-1}
+.card{transition:transform .25s,border-color .25s,box-shadow .25s}
+.grid>.card:hover,.stat:hover{transform:translateY(-4px);border-color:var(--red);box-shadow:0 14px 34px var(--red-soft)}
+.btn.red{position:relative;overflow:hidden}
+.btn.red::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);transition:transform .7s}
+.btn.red:hover::after{transform:translateX(120%)}
+.hero .btn.red{animation:cta 2.6s ease-in-out infinite}
+@keyframes cta{0%,100%{box-shadow:0 0 0 0 var(--glow)}50%{box-shadow:0 0 0 12px transparent}}
+.pgin>*{animation:pgin .5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes pgin{from{opacity:0;transform:translateY(14px)}}
+.pgin .bar i{animation:grow 1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes grow{from{width:0}}
+.pgin .rg{animation:ringin 1.1s cubic-bezier(.2,.7,.2,1) both}
+@keyframes ringin{from{stroke-dasharray:0 1000}}
+#splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#000;transition:opacity .6s,visibility .6s}
+#splash.out{opacity:0;visibility:hidden}
+#splash img{width:min(60vw,300px);border-radius:28px;animation:spl 1.2s cubic-bezier(.2,.7,.2,1) both}
+#splash::after{content:"";position:absolute;bottom:18%;width:min(50vw,220px);height:3px;border-radius:3px;background:linear-gradient(90deg,var(--red) 0 50%,#333 50%) 0 0/200% 100%;animation:ld 1.1s linear both}
+@keyframes spl{from{opacity:0;transform:scale(.7) rotate(-6deg);filter:blur(10px)}}
+@keyframes ld{from{background-position:100% 0}to{background-position:0 0}}
+.navi{transition:background .2s,transform .2s}.navi:hover{transform:translateX(4px)}[dir=rtl] .navi:hover{transform:translateX(-4px)}
+.setb.on svg{animation:pop .4s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(0)}}
+
+.wbars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end}
+.wb{display:flex;flex-direction:column;align-items:center;gap:6px}
+.wb .colb{width:100%;height:96px;background:var(--card-2);border-radius:8px;display:flex;align-items:flex-end;overflow:hidden}
+.wb .colb i{width:100%;background:linear-gradient(var(--red-ink),var(--red));border-radius:8px 8px 0 0;min-height:2px}
+.pgin .wb .colb i{animation:growv .9s cubic-bezier(.2,.7,.2,1) both}@keyframes growv{from{height:0!important}}
+.wb .dot{width:9px;height:9px;border-radius:50%;background:var(--line)}.wb .dot.on{background:var(--ok);box-shadow:0 0 0 4px var(--ok-soft)}
+.wb small{color:var(--muted);font-size:11px}
+#rest{position:fixed;inset-inline-end:16px;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:10px;padding:8px 10px 8px 16px;background:var(--card);border:1px solid var(--red);border-radius:99px;box-shadow:0 10px 30px rgba(0,0,0,.35),0 0 0 6px var(--red-soft);animation:up .3s both}
+#rest[hidden]{display:none}#rest.go{background:var(--ok);border-color:var(--ok);color:#06240f}
+.herologo{transition:transform .15s ease-out}

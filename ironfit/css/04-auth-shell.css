@@ -1,0 +1,5 @@
+/* auth */
+.auth{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;min-height:calc(100vh - 64px)}
+.auth .side-art{padding:48px 40px;background:linear-gradient(160deg,var(--red-soft),transparent 60%),var(--bg-2);border-inline-end:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:20px}
+.auth .form{padding:48px 40px;display:flex;flex-direction:column;justify-content:center;max-width:520px;width:100%;margin-inline:auto}
+

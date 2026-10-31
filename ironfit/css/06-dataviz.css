@@ -1,0 +1,14 @@
+/* data viz */
+.ring{display:block}
+.chart{width:100%;height:auto;display:block}
+.chart text{font:500 11px var(--f-body);fill:var(--muted);font-variant-numeric:tabular-nums}
+.chart .grid-l{stroke:var(--line);stroke-width:1;fill:none}
+.chart .ln{fill:none;stroke:var(--red);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.chart .pt{fill:var(--card);stroke:var(--red);stroke-width:2}
+.chart .pt.last{fill:var(--red)}
+.kpi{display:flex;flex-direction:column;gap:4px}
+.kpi .num{font-size:2.1rem}
+.kpi .l{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+html[lang="ar"] .kpi .l{text-transform:none;letter-spacing:0}
+.delta.up-g{color:var(--ok)}.delta.dn{color:var(--red-ink)}
+

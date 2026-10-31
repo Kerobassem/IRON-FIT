@@ -1,0 +1,35 @@
+/* Values per 100 g: [kcal, protein g, carbs g, fat g, fiber g, sugar g, sodium mg]. null = not available.
+   Rounded from USDA FoodData Central (SR Legacy). tags = allergens / diet markers. */
+const FOODS=[
+{id:'chicken',en:'Chicken breast, skinless',ar:'صدور فراخ بدون جلد',st:'cooked',per:[165,31,0,3.6,0,0,74],tags:['meat']},
+{id:'beef',en:'Ground beef, 90% lean',ar:'لحم بقري مفروم (قليل الدهن)',st:'cooked',per:[217,26.1,0,11.7,0,0,72],tags:['meat']},
+{id:'salmon',en:'Salmon, farmed',ar:'سلمون مزارع',st:'cooked',per:[206,22.1,0,12.4,0,0,61],tags:['fish']},
+{id:'cod',en:'Cod',ar:'سمك الحدوق (كود)',st:'cooked',per:[105,22.8,0,0.9,0,0,78],tags:['fish']},
+{id:'tuna',en:'Tuna, canned in water',ar:'تونة معلبة بالماء',st:'prepared',per:[116,25.5,0,0.8,0,0,247],tags:['fish']},
+{id:'egg',en:'Egg, whole, boiled',ar:'بيض مسلوق',st:'cooked',per:[155,12.6,1.1,10.6,0,1.1,124],tags:['eggs']},
+{id:'rice',en:'White rice',ar:'أرز أبيض',st:'cooked',per:[130,2.7,28.2,0.3,0.4,0.1,1],tags:[]},
+{id:'oats',en:'Rolled oats',ar:'شوفان',st:'raw',per:[389,16.9,66.3,6.9,10.6,0,2],tags:['gluten']},
+{id:'potato',en:'Potato, boiled',ar:'بطاطس مسلوقة',st:'cooked',per:[87,1.9,20.1,0.1,1.8,0.9,5],tags:[]},
+{id:'sweetpotato',en:'Sweet potato, baked',ar:'بطاطا حلوة مشوية',st:'cooked',per:[90,2,20.7,0.2,3.3,6.5,36],tags:[]},
+{id:'pasta',en:'Pasta',ar:'مكرونة',st:'cooked',per:[158,5.8,30.9,0.9,1.8,0.6,1],tags:['gluten']},
+{id:'bread',en:'Whole-wheat bread',ar:'خبز قمح كامل',st:'prepared',per:[247,13,41.3,3.4,6.8,6,400],tags:['gluten']},
+{id:'lentils',en:'Lentils',ar:'عدس',st:'cooked',per:[116,9,20.1,0.4,7.9,1.8,2],tags:[]},
+{id:'chickpeas',en:'Chickpeas',ar:'حمص',st:'cooked',per:[164,8.9,27.4,2.6,7.6,4.8,7],tags:[]},
+{id:'fava',en:'Fava beans (ful)',ar:'فول',st:'cooked',per:[110,7.6,19.7,0.4,5.4,null,5],tags:[]},
+{id:'cottage',en:'Cottage cheese, 2% fat',ar:'جبنة قريش',st:'prepared',per:[81,10.4,4.8,2.3,0,4,321],tags:['dairy']},
+{id:'yogurt',en:'Greek yogurt, plain, nonfat',ar:'زبادي يوناني سادة',st:'prepared',per:[59,10.2,3.6,0.4,0,3.2,36],tags:['dairy']},
+{id:'milk',en:'Whole milk',ar:'لبن كامل الدسم',st:'prepared',per:[61,3.2,4.8,3.3,0,5.1,43],tags:['dairy']},
+{id:'feta',en:'Feta cheese',ar:'جبنة فيتا',st:'prepared',per:[264,14.2,4.1,21.3,0,4.1,917],tags:['dairy']},
+{id:'banana',en:'Banana',ar:'موز',st:'raw',per:[89,1.1,22.8,0.3,2.6,12.2,1],tags:[]},
+{id:'apple',en:'Apple, with skin',ar:'تفاح',st:'raw',per:[52,0.3,13.8,0.2,2.4,10.4,1],tags:[]},
+{id:'dates',en:'Dates, Medjool',ar:'تمر مجدول',st:'raw',per:[277,1.8,75,0.2,6.7,66.5,1],tags:[]},
+{id:'avocado',en:'Avocado',ar:'أفوكادو',st:'raw',per:[160,2,8.5,14.7,6.7,0.7,7],tags:[]},
+{id:'broccoli',en:'Broccoli',ar:'بروكلي',st:'cooked',per:[35,2.4,7.2,0.4,3.3,1.4,41],tags:[]},
+{id:'tomato',en:'Tomato',ar:'طماطم',st:'raw',per:[18,0.9,3.9,0.2,1.2,2.6,5],tags:[]},
+{id:'cucumber',en:'Cucumber',ar:'خيار',st:'raw',per:[15,0.7,3.6,0.1,0.5,1.7,2],tags:[]},
+{id:'almonds',en:'Almonds',ar:'لوز',st:'raw',per:[579,21.2,21.6,49.9,12.5,4.4,1],tags:['nuts']},
+{id:'pbutter',en:'Peanut butter, smooth',ar:'زبدة فول سوداني',st:'prepared',per:[588,25.1,20,50.4,6,9.2,426],tags:['nuts']},
+{id:'tahini',en:'Tahini',ar:'طحينة',st:'prepared',per:[595,17,21.2,53.8,9.3,0.5,115],tags:['sesame']},
+{id:'olive',en:'Olive oil',ar:'زيت زيتون',st:'prepared',per:[884,0,0,100,0,0,2],tags:[]}
+];
+const VIT=[['Vitamin A','فيتامين أ'],['Vitamin B1','فيتامين ب1'],['Vitamin B2','فيتامين ب2'],['Vitamin B6','فيتامين ب6'],['Vitamin B12','فيتامين ب12'],['Vitamin C','فيتامين ج'],['Vitamin D','فيتامين د'],['Vitamin E','فيتامين هـ'],['Vitamin K','فيتامين ك'],['Calcium','الكالسيوم'],['Iron','الحديد'],['Magnesium','المغنيسيوم'],['Potassium','البوتاسيوم'],['Zinc','الزنك']];

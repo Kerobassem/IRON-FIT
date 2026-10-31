@@ -1,0 +1,8 @@
+/* ===== IRON FIT logo: vector master (320 × 200 grid, ring R80, 12° forward slant) =====
+   I = silver iron · F = red effort · barbell on the horizontal axis · ring split twice
+   (top-right: silver/red, lower-left: where the I crosses). Below 48px the barbell drops and the ring thickens. */
+function logoMark(h=64,o={}){
+  const small=h<48,sw=small?13:7,uid=o.draw?' lm-a':'';
+  const bar=small?'':'<g fill="url(#lmS)"><rect x="46" y="98.5" width="228" height="3"/><rect x="28" y="78" width="9" height="44"/><rect x="39" y="86" width="7" height="28"/><rect x="283" y="78" width="9" height="44"/><rect x="274" y="86" width="7" height="28"/></g>';
+  return `<svg class="lm" viewBox="0 0 320 200" height="${h}" width="${Math.round(h*1.6)}" role="img" aria-label="IRON FIT" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="lmS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f5f6"/><stop offset=".5" stop-color="#c5c7ca"/><stop offset="1" stop-color="#868a90"/></linearGradient></defs>${bar}<g fill="none" stroke-width="${sw}"><path class="${uid.trim()}" pathLength="1" d="M200 30.7A80 80 0 0 0 93.7 144.7" stroke="url(#lmS)"/><path class="${uid.trim()}" pathLength="1" d="M211.4 38.7A80 80 0 1 1 104.4 157.5" stroke="#e50920"/></g><g transform="translate(160 100) skewX(-12) translate(-160 -100)"><path d="M124 58H134V142H118V64Z" fill="url(#lmS)"/><path d="M152 58H208L202 74H162V90H194L190 104H162V142H146V64Z" fill="#e50920"/></g></svg>`}
+const logoLockup=(draw)=>`<div class="lk">${logoMark(150,{draw})}<div class="lk-w">IRON <b>FIT</b></div><div class="lk-t">STRONGER • SMARTER • BETTER</div></div>`;

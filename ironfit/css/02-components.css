@@ -1,0 +1,37 @@
+/* surfaces */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.card.flat{background:transparent}
+.card h3{margin-bottom:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;background:var(--card-2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.red{background:var(--red-soft);color:var(--red-ink);border-color:transparent}
+.chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.seg{display:inline-flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 12px;border-radius:9px;font:700 13px var(--f-body);cursor:pointer;min-height:34px}
+.seg button.on{background:var(--red);color:#fff}
+.choice{display:flex;flex-direction:column;gap:4px;text-align:start;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;font:600 15px var(--f-body);transition:border-color .2s,background .2s}
+.choice small{color:var(--muted);font-weight:500;font-size:12px}
+.choice.on{border-color:var(--red);background:var(--red-soft)}
+.choice:hover{border-color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--card-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c,var(--red));border-radius:99px;transition:width .6s}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;font-size:14px}
+.note{padding:12px 14px;border-radius:12px;background:var(--warn-soft);color:var(--fg);font-size:13px;border:1px solid transparent}
+.note.red{background:var(--red-soft)}
+.scroll{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:start;white-space:nowrap}
+.tbl th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+html[lang="ar"] .tbl th{text-transform:none;letter-spacing:0}
+.up{animation:up .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*70ms)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes rg{from{stroke-dasharray:0 1000}}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes sk{to{background-position:-200% 0}}
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.rg{animation:rg .9s ease-out}
+.draw{stroke-dasharray:1;stroke-dashoffset:0;animation:draw 1s ease-out}
+.sk{background:linear-gradient(90deg,var(--card-2),var(--line),var(--card-2));background-size:200% 100%;animation:sk 1.2s linear infinite;border-radius:8px}
+html.tt *,html.tt *::before,html.tt *::after{transition:background-color .3s,color .3s,border-color .3s,fill .3s,stroke .3s!important}
+[dir="rtl"] .flip{transform:scaleX(-1)}
+
