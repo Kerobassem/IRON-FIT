@@ -7,7 +7,20 @@
 .glasses span{color:var(--line);display:inline-flex;transition:color .3s,transform .3s}
 .glasses span.on{color:#38bdf8;transform:translateY(-2px)}
 .glasses span.on svg{fill:rgba(56,189,248,.28)}
-.mic{display:inline-grid;place-items:center;width:30px;height:30px;color:var(--red-ink);background:var(--red-soft);clip-path:polygon(25% 0,100% 0,100% 75%,75% 100%,0 100%,0 25%)}
+.mic{--meal-ink:var(--red-ink);--meal-bg:var(--red-soft);--meal-fill:var(--card);display:inline-grid;place-items:center;flex:none;width:46px;height:46px;color:var(--meal-ink);background:linear-gradient(145deg,color-mix(in srgb,var(--meal-bg) 75%,var(--card)),var(--card-2));border:1px solid color-mix(in srgb,var(--meal-ink) 35%,var(--line));border-radius:13px;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 4px 12px rgba(0,0,0,.08)}
+.mic svg{display:block;width:39px;height:39px;overflow:visible}
+.mic .dish{fill:var(--meal-fill);stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mic .dish-inner{fill:none;stroke:currentColor;stroke-opacity:.55;stroke-width:1.6}
+.mic .detail{stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mic .food-white{fill:var(--meal-fill);stroke:currentColor;stroke-width:1.7;stroke-linejoin:round}
+.mic .food-accent{fill:var(--meal-accent);stroke:currentColor;stroke-width:1.2}
+.mic .food-leaf{fill:var(--meal-accent);stroke:currentColor;stroke-width:1.4;stroke-linejoin:round}
+.mic .food-leaf.second{fill:color-mix(in srgb,var(--meal-accent) 60%,var(--ok))}
+.mic-breakfast{--meal-ink:#a94f0b;--meal-bg:rgba(245,158,11,.2);--meal-accent:#f2b544}
+.mic-lunch{--meal-ink:#16734b;--meal-bg:rgba(34,197,94,.17);--meal-accent:#45a66d}
+.mic-dinner{--meal-ink:#315f9d;--meal-bg:rgba(59,130,246,.16);--meal-accent:#78a9e8}
+.mic-snack{--meal-ink:#b63832;--meal-bg:rgba(229,57,53,.15);--meal-accent:#e65b4d}
+.meal-card h3{gap:12px}
 .mshare{margin:10px 0 2px}.mshare .bar{height:4px}
 .fcats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .fcats .chip{cursor:pointer;border-radius:3px}

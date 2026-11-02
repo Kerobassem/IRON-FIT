@@ -11,6 +11,39 @@
 .macro .num{font-size:1.5rem}
 .excard{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card);min-width:0}
 .excard.sel{border-color:var(--red)}
+.exercise-detail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);min-width:0}
+.exercise-meta{margin:10px 0 14px}
+.exercise-showcase{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));align-items:start;gap:22px}
+.exercise-anatomy{min-width:0}
+.exercise-video{display:flex;flex-direction:column;align-items:center;min-width:0}
+.exercise-video>.lbl{margin:0 0 8px}
+.youtube-player{position:relative;width:min(100%,760px);margin-inline:auto;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#111;box-shadow:0 14px 36px rgba(0,0,0,.24),0 0 0 1px var(--line)}
+.youtube-player iframe{position:absolute;inset:0;display:block;width:100%;height:100%;border:0}
+.youtube-player iframe[hidden]{display:none}
+.youtube-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;margin:0;background:rgba(0,0,0,.68);color:#fff;font-size:13px;font-weight:700;pointer-events:none}
+.video-loading-spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.35);border-top-color:var(--red);border-radius:50%;animation:youtube-spin .8s linear infinite}
+.video-error{position:absolute;inset:0;display:grid;place-content:center;gap:8px;margin:0;padding:16px;background:var(--card-2);color:var(--fg);font-size:13px;text-align:center}
+.video-error p{margin:0}
+.video-error a,.youtube-link a{color:var(--red-ink);font-weight:700;text-underline-offset:2px}
+.youtube-link{width:min(100%,760px);margin:9px auto 0;font-size:12px;text-align:end}
+.youtube-loading[hidden],.video-error[hidden]{display:none}
+@keyframes youtube-spin{to{transform:rotate(360deg)}}
+.video-placeholder{display:grid;place-content:center;gap:8px;aspect-ratio:16/9;padding:16px;border:1px dashed var(--line);border-radius:12px;background:var(--card-2);text-align:center}
+.video-placeholder p{margin:0}
+.video-placeholder-icon{display:grid;place-items:center;width:44px;height:44px;margin-inline:auto;border-radius:50%;background:var(--red-soft);color:var(--red)}
+.exercise-copy-label{margin:16px 0 6px}
+.exercise-library{min-width:0}
+.exercise-library>.row:first-child{margin-bottom:14px}
+.exercise-library .lbl{margin:0 0 4px}
+.exercise-library h3{margin:0}
+.library-filters{overflow-x:auto;flex-wrap:nowrap;padding:2px 0 8px}
+.library-filters .chip{flex:0 0 auto;min-height:36px;border:1px solid var(--line);background:var(--card-2);color:var(--fg);cursor:pointer}
+.library-filters .chip.on{border-color:var(--red);background:var(--red-soft);color:var(--red-ink)}
+.exercise-library-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:8px}
+.library-exercise{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;min-width:0;min-height:58px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);cursor:pointer;font:700 13px var(--f-body);text-align:start}
+.library-exercise small{color:var(--muted);font-size:11px;font-weight:600}
+.library-exercise:hover,.library-exercise.on{border-color:var(--red);background:var(--red-soft)}
+.library-exercise.on small{color:var(--red-ink)}
 .sets{display:flex;gap:8px;flex-wrap:wrap}
 .setb{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--field);color:var(--muted);cursor:pointer;font:700 13px var(--f-body)}
 .setb svg path{stroke-dasharray:24;stroke-dashoffset:24}
@@ -45,4 +78,21 @@ html[lang="ar"] .anat figcaption{text-transform:none;letter-spacing:0}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
 .photo .tag{position:absolute;left:8px;bottom:8px}
 .photo button{position:absolute;top:6px;right:6px}
-
+@media (max-width:400px){
+  .logrow{grid-template-columns:minmax(0,1fr) auto;gap:6px}
+  .logrow>input{grid-column:2;width:76px}
+  .logrow>span{grid-column:1;grid-row:2;text-align:start!important;min-width:0!important}
+  .logrow>button{grid-column:2;grid-row:2;justify-self:end}
+}
+@media (max-width:700px){
+  .exercise-detail{position:static}
+  .exercise-showcase{grid-template-columns:minmax(0,1fr);gap:18px}
+  .workout-detail-layout{grid-template-columns:minmax(0,1fr)}
+  .exercise-library-list{grid-template-columns:repeat(auto-fill,minmax(min(100%,145px),1fr))}
+}
+@media (min-width:701px){
+  .workout-detail-layout{grid-template-columns:minmax(260px,.78fr) minmax(0,1.35fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .video-loading-spinner{animation:none}
+}

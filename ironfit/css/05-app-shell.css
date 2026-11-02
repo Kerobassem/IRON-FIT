@@ -36,4 +36,13 @@
 }
 @media (max-width:760px){.pubnav{display:none}}
 @media (max-width:520px){.hide-s{display:none!important}}
-
+@media (max-width:600px){
+  .main{padding-top:16px}
+  .topbar{align-items:flex-start;gap:8px}
+  .topbar>div:first-child{min-width:0}
+  .topbar h1{overflow-wrap:anywhere}
+  .bnav{gap:2px;padding-top:6px}
+  .bn{flex:1 1 0;min-width:0;min-height:48px;padding:5px 2px;gap:3px;font-size:clamp(10px,2.7vw,12px)}
+  .bn span{white-space:nowrap}
+  .bn.on{background:var(--red-soft)}
+}

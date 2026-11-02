@@ -4,12 +4,14 @@ const A={
   lang(){setPrefs({lang:LANG==='ar'?'en':'ar'})},
   settheme(e){setPrefs({theme:e.dataset.v})},
   setlang(e){setPrefs({lang:e.dataset.v})},
+  soundToggle(){const sounds=!PREF.sounds;setPrefs({sounds});if(sounds)playUiSound('notice')},
+  soundTest(){playUiSound('notice')},
   scroll(e){const id=e.dataset.to;if(route()!=='home'){ui.pend=id;go('home');return}const n=document.getElementById(id);n&&n.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})},
   demo(){startDemo()},
   forgot(){ui.forgot=true;render()},
   contact(){toast(t('contactNote'))},
   demoex(e){ui.demoEx=e.dataset.id;ui.muscle=null;render()},
-  notif(){ui.notif=!ui.notif;render()},
+  notif(){if(!ui.notif)playUiSound('notice');ui.notif=!ui.notif;render()},
   logout(){logout()},
   obpick(e){const k=e.dataset.k;let v=e.dataset.v;if(['days','meals'].includes(k))v=+v;obCap();ui.ob.d[k]=v;render()},
   obtoggle(e){obCap();const a=ui.ob.d[e.dataset.k],v=e.dataset.v,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1);render()},
@@ -27,14 +29,16 @@ const A={
   closem(){closeModal()},
   ndate(e){const n=addDays(ui.ndate||today(),+e.dataset.d);ui.ndate=n>today()?today():n;render()},
   startw(){ui.wd=null;ui.wex=null;go('workouts')},
-  wprog(e){ui.wp=e.dataset.id;D.profile.programId=e.dataset.id;ui.wd=null;ui.wex=null;D.wip=null;save();render()},
-  wday(e){ui.wd=+e.dataset.i;ui.wex=null;ui.muscle=null;render()},
-  wset(e){const w=getWip(),id=e.dataset.ex,i=+e.dataset.i,a=w.sets[id]||(w.sets[id]=[]);for(let k=0;k<EX[id].sets;k++)a[k]=!!a[k];a[i]=!a[i];save();render()},
-  exsel(e){const id=e.dataset.id;ui.muscle=null;
+  wprog(e){ui.wp=e.dataset.id;D.profile.programId=e.dataset.id;ui.wd=null;ui.wex=null;ui.libex=null;D.wip=null;save();render()},
+  wday(e){ui.wd=+e.dataset.i;ui.wex=null;ui.libex=null;ui.muscle=null;render()},
+  wset(e){const w=getWip(),id=e.dataset.ex,i=+e.dataset.i,a=w.sets[id]||(w.sets[id]=[]);for(let k=0;k<EX[id].sets;k++)a[k]=!!a[k];a[i]=!a[i];playUiSound(a[i]?'success':'tap');save();render()},
+  exsel(e){const id=e.dataset.id;ui.muscle=null;playUiSound('tap');
     if(route()==='home'){ui.demoEx=id;render();return}
     const pid=curProgId(),days=PROGRAMS[pid].days,di=days.findIndex(d=>d.ex.includes(id));
     if(di<0){toast(t('notInProg'),true);return}
-    const cur=ui.wd!=null?ui.wd:nextDay(pid);if(di!==cur)ui.wd=di;ui.wex=id;render()},
+    const cur=ui.wd!=null?ui.wd:nextDay(pid);if(di!==cur)ui.wd=di;ui.wex=id;ui.libex=null;ui.view=EX[id].view;render()},
+  libfilter(e){ui.libcat=e.dataset.category;render()},
+  libexsel(e){const id=e.dataset.id;if(!EX_LIBRARY.includes(id)){toast(t('exerciseMissing'),true);return}playUiSound('tap');ui.libex=id;ui.muscle=null;ui.view=EX[id].view;ui.pend='exercise-detail-card';render()},
   view(e){ui.view=e.dataset.v;render()},
   muscle(e){ui.muscle=ui.muscle===e.dataset.id?null:e.dataset.id;render()},
   wfinish(){const pid=curProgId(),prog=PROGRAMS[pid],di=clamp(ui.wd!=null?ui.wd:nextDay(pid),0,prog.days.length-1),day=prog.days[di],w=getWip();
@@ -46,7 +50,8 @@ const A={
   metric(e){ui.metric=e.dataset.v;render()},
   range(e){ui.range=e.dataset.v;render()},
   pdel(e){D.photos=D.photos.filter(x=>x.id!==e.dataset.id);save();toast(t('photoDeleted'));render()},
-  ibclear(){captureIb();ui.ib.file=null;ibImg=null;render()},
+  ibocr(){extractIbReport()},
+  ibclear(){captureIb();ui.ib.file=null;ui.ib.ocr=null;ibImg=null;ibPdf=null;render()},
   ibrot(){captureIb();ui.ib.file.rot=(ui.ib.file.rot+90)%360;drawIb()},
   mrep(e){ui.report=e.dataset.id;ui.pend='report';render()},
   mdel(e){const id=e.dataset.id;D.measurements=D.measurements.filter(m=>m.id!==id);D.reports=D.reports.filter(r=>r.mid!==id);if(ui.report===id)ui.report=null;save();toast(t('saved'));render()},
@@ -64,4 +69,3 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if($('#modal').innerHTML)closeModal();else if(ui.notif){ui.notif=false;render()}return}
   if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[data-act][role=button],[data-act][role=link]')){e.preventDefault();e.target.click()}});
-

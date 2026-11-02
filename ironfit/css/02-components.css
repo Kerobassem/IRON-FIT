@@ -6,6 +6,8 @@
 .chip.red{background:var(--red-soft);color:var(--red-ink);border-color:transparent}
 .chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
 .chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.ib-ocr-medium{border-color:var(--warn);background:var(--warn-soft)}
+.ib-ocr-low{border-color:var(--red-ink);box-shadow:0 0 0 1px var(--red-ink)}
 .seg{display:inline-flex;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
 .seg button{border:0;background:transparent;color:var(--muted);padding:6px 12px;border-radius:9px;font:700 13px var(--f-body);cursor:pointer;min-height:34px}
 .seg button.on{background:var(--red);color:#fff}
@@ -34,4 +36,3 @@ html[lang="ar"] .tbl th{text-transform:none;letter-spacing:0}
 .sk{background:linear-gradient(90deg,var(--card-2),var(--line),var(--card-2));background-size:200% 100%;animation:sk 1.2s linear infinite;border-radius:8px}
 html.tt *,html.tt *::before,html.tt *::after{transition:background-color .3s,color .3s,border-color .3s,fill .3s,stroke .3s!important}
 [dir="rtl"] .flip{transform:scaleX(-1)}
-

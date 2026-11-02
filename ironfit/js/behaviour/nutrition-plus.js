@@ -4,7 +4,6 @@ function fpic(f,s){const c=(FPIC[f.id]||['','#94a3b8'])[1];return`<span class="f
 
 const FCAT={protein:['chicken','beef','salmon','cod','tuna','egg','cottage'],carbs:['rice','oats','potato','sweetpotato','pasta','bread','lentils','chickpeas','fava'],veg:['broccoli','tomato','cucumber'],fruit:['banana','apple','dates','avocado'],dairy:['yogurt','milk','feta','cottage'],fats:['almonds','pbutter','tahini','olive','avocado']};
 const FCAT_L={all:['All','الكل'],protein:['Protein','بروتين'],carbs:['Carbs','كربوهيدرات'],veg:['Veg','خضار'],fruit:['Fruit','فاكهة'],dairy:['Dairy','ألبان'],fats:['Fats','دهون']};
-const MEAL_IC={breakfast:'sun',lunch:'bowl',dinner:'moon',snack:'bolt'};
 const catChips=()=>Object.keys(FCAT_L).map(k=>`<button type="button" class="chip ${(ui.add&&ui.add.cat||'all')===k?'red':''}" data-act="fcat" data-c="${k}">${FCAT_L[k][LANG==='ar'?1:0]}</button>`).join('');
 A.fcat=function(e){ui.add.cat=e.dataset.c==='all'?null:e.dataset.c;$('#fcats').innerHTML=catChips();$('#fres').innerHTML=foodResults(ui.add.q)};
 

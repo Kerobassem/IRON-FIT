@@ -8,9 +8,9 @@ function sset(k,v){if(!LS){mem[k]=v;return true}try{localStorage.setItem(k,JSON.
 function sdel(k){try{if(LS)localStorage.removeItem(k)}catch(e){}delete mem[k]}
 
 let ACC=sget('sf_users')||[],CUR=null,D=null;
-let PREF=sget('sf_prefs')||{lang:/^ar/i.test(navigator.language||'')?'ar':'en',theme:'system'};
+let PREF=Object.assign({lang:/^ar/i.test(navigator.language||'')?'ar':'en',theme:'system',sounds:false},sget('sf_prefs')||{});
 let LANG=PREF.lang==='ar'?'ar':'en';
-const ui={ndate:null,range:'30',metric:'weight',view:'both',muscle:null,notif:false,demoEx:'bench',ob:null,ib:{units:'kg',form:{}},add:null,wp:null,wd:null,wex:null,cmp:{},ph:{view:'front'},delArm:false,forgot:false};
+const ui={ndate:null,range:'30',metric:'weight',view:'both',muscle:null,notif:false,demoEx:'bench',ob:null,ib:{units:'kg',form:{}},add:null,wp:null,wd:null,wex:null,libex:null,libcat:'all',cmp:{},ph:{view:'front'},delArm:false,forgot:false};
 
 const loc=()=>LANG==='ar'?'ar-EG':'en-US';
 const t=(k,v)=>{let s=(T[LANG]&&T[LANG][k]);if(s==null)s=T.en[k];if(s==null)s=k;if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};
@@ -34,7 +34,23 @@ const logoSvg=(s=34)=>logoMark(Math.round(s*1.2));
 const logo=(s=34)=>`${logoSvg(s)}<span class="wordmark">IRON <b>FIT</b></span>`;
 
 /* ---------- toast / modal ---------- */
-function toast(msg,err){const h=$('#toast');if(!h)return;const d=document.createElement('div');d.className='toast'+(err?' err':'');d.textContent=msg;h.appendChild(d);setTimeout(()=>d.remove(),2600)}
+let uiAudio=null;
+function playUiSound(type='tap'){
+  if(!PREF.sounds)return;
+  const AudioContext=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContext){console.warn('UI sounds are unavailable because Web Audio is not supported.');return}
+  try{
+    uiAudio=uiAudio||new AudioContext();
+    const ctx=uiAudio,notes=type==='error'?[420,330]:type==='success'?[520,660,780]:type==='notice'?[620,820]:[560];
+    const play=()=>notes.forEach((frequency,index)=>{
+      const start=ctx.currentTime+index*.085,osc=ctx.createOscillator(),gain=ctx.createGain();
+      osc.type='sine';osc.frequency.setValueAtTime(frequency,start);
+      gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(.035,start+.012);gain.gain.exponentialRampToValueAtTime(.0001,start+.11);
+      osc.connect(gain);gain.connect(ctx.destination);osc.start(start);osc.stop(start+.12);
+    });
+    if(ctx.state==='suspended')ctx.resume().then(play).catch(error=>console.warn('UI sound could not be started:',error));else play();
+  }catch(error){console.warn('UI sound could not be played:',error)}
+}
+function toast(msg,err){const h=$('#toast');if(!h)return;playUiSound(err?'error':'success');const d=document.createElement('div');d.className='toast'+(err?' err':'');d.textContent=msg;h.appendChild(d);setTimeout(()=>d.remove(),2600)}
 function openModal(html){$('#modal').innerHTML=html;const f=$('#modal input,#modal button.btn');if(f&&f.id==='fq')f.focus()}
 function closeModal(){$('#modal').innerHTML='';ui.add=null}
-

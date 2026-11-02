@@ -5,17 +5,24 @@ const GADJ={muscle:10,fatloss:-15,recomp:0,bulk:15,fit:0,maintain:0,strength:5};
 const GPRO={muscle:1.8,fatloss:2.0,recomp:2.0,bulk:1.8,fit:1.6,maintain:1.6,strength:1.8};
 const latestM=()=>D.measurements.length?D.measurements[D.measurements.length-1]:null;
 const curWeight=()=>{const m=[...D.measurements].reverse().find(x=>x.weight!=null);return m?m.weight:D.profile.weight};
-function calc(){const p=D.profile,w=curWeight(),h=p.height,a=p.age;
-  const bmr=10*w+6.25*h-5*a+(p.gender==='male'?5:-161);
-  const tdee=bmr*AF[p.activity];
-  let adj=D.adj!=null?D.adj:GADJ[p.goal];const notes=[];
-  const bmi=w/Math.pow(h/100,2);
+function calc(options={}){
+  const p=options.profile||D.profile,m=options.measurement;
+  const w=m?(m.weight??p.weight):curWeight(),h=m?(m.height??p.height):p.height,a=p.age;
+  const validW=Number.isFinite(w)&&w>0,validH=Number.isFinite(h)&&h>0,validAge=Number.isFinite(a)&&a>0;
+  const bmi=m&&Number.isFinite(m.bmi)&&m.bmi>0?m.bmi:validW&&validH?w/Math.pow(h/100,2):null;
+  const bmr=validW&&validH&&validAge?10*w+6.25*h-5*a+(p.gender==='male'?5:-161):null;
+  const tdee=bmr!=null&&AF[p.activity]!=null?bmr*AF[p.activity]:null;
+  const adjSetting=Object.prototype.hasOwnProperty.call(options,'adjustment')?options.adjustment:D.adj;
+  let adj=Number.isFinite(adjSetting)?adjSetting:(GADJ[p.goal]??GADJ.maintain);const notes=[];
   if(a<18){if(adj<0)adj=0;notes.push('noteMinor')}
-  if(bmi<18.5&&adj<0){adj=0;notes.push('noteLowBmi')}
-  let kcal=Math.round(tdee*(1+adj/100));
-  const floor=p.gender==='male'?1500:1200;if(kcal<floor){kcal=floor;notes.push('noteFloor')}
-  const perKg=D.pro!=null?D.pro:GPRO[p.goal];
-  const protein=Math.round(w*perKg),fat=Math.round(kcal*.25/9),carbs=Math.max(0,Math.round((kcal-protein*4-fat*9)/4));
+  if(bmi!=null&&bmi<18.5&&adj<0){adj=0;notes.push('noteLowBmi')}
+  let kcal=tdee!=null?Math.round(tdee*(1+adj/100)):null;
+  const floor=p.gender==='male'?1500:1200;if(kcal!=null&&kcal<floor){kcal=floor;notes.push('noteFloor')}
+  const proteinSetting=Object.prototype.hasOwnProperty.call(options,'proteinPerKg')?options.proteinPerKg:D.pro;
+  const perKg=Number.isFinite(proteinSetting)?proteinSetting:(GPRO[p.goal]??GPRO.maintain);
+  const protein=validW&&perKg!=null?Math.round(w*perKg):null;
+  const fat=kcal!=null?Math.round(kcal*.25/9):null;
+  const carbs=kcal!=null&&protein!=null&&fat!=null?Math.max(0,Math.round((kcal-protein*4-fat*9)/4)):null;
   return{bmr,tdee,kcal,protein,fat,carbs,adj,bmi,notes,w,perKg}}
 function entryN(e){const f=FOOD[e.foodId];if(!f)return null;const k=e.grams/100,p=f.per,m=x=>x==null?null:x*k;return{kcal:p[0]*k,p:p[1]*k,c:p[2]*k,f:p[3]*k,fi:m(p[4]),su:m(p[5]),na:m(p[6])}}
 function totals(date){const r={kcal:0,p:0,c:0,f:0,fi:0,na:0,n:0};for(const e of D.logs[date]||[]){const n=entryN(e);if(!n)continue;r.n++;r.kcal+=n.kcal;r.p+=n.p;r.c+=n.c;r.f+=n.f;r.fi+=n.fi||0;r.na+=n.na||0}return r}
@@ -30,4 +37,3 @@ function nextDay(pid){const n=PROGRAMS[pid].days.length;return D.sessions.filter
 function dayMinutes(day){let s=0;day.ex.forEach(id=>{const e=EX[id];s+=e.sets*(40+e.rest)});return Math.round(s/60)}
 const repsLabel=e=>e.reps+(e.secs?' '+t('secs'):'')+(e.per?' / '+t('per_'+e.per):'');
 function getWip(){const pid=curProgId(),d=ui.wd!=null?ui.wd:nextDay(pid),key=pid+'|'+d+'|'+today();if(!D.wip||D.wip.key!==key)D.wip={key,sets:{},w:{}};return D.wip}
-

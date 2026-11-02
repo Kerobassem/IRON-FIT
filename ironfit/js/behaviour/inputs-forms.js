@@ -1,4 +1,6 @@
 /* ---------- input / change ---------- */
+Object.assign(T.en,{errDate:'Choose a report date that is today or earlier.',errNumber:'Check {f}: enter a valid number.'});
+Object.assign(T.ar,{errDate:'اختر تاريخاً للتقرير لا يتجاوز اليوم.',errNumber:'راجع {f}: أدخل رقماً صحيحاً.'});
 function liveCalc(){const c=calc(),a=$('#tk'),b=$('#tp');if(a)a.textContent=fmt(c.kcal);if(b)b.textContent=fmt(c.protein)+' '+t('g')}
 const INP={
   mini(el){const g=num(el.value),ok=g>0&&g<=3000,s=(id,v,d)=>{const n=$('#'+id);if(n)n.textContent=ok?fmt(v*g/100,d):'—'};s('mk',165,0);s('mp',31,1);s('mc',0,1)},
@@ -10,8 +12,9 @@ const INP={
   prov(el){D.pro=+el.value;const n=$('#prov');if(n)n.textContent=fmt(D.pro,1)+' '+t('g')+' / '+t('kg');liveCalc()}
 };
 document.addEventListener('input',e=>{const el=e.target;
+  if(el.closest&&el.closest('#ibform'))captureIb();
   if(el.dataset&&el.dataset.on&&INP[el.dataset.on])INP[el.dataset.on](el);
-  if(el.dataset&&el.dataset.stf){const n=$('[data-st="'+el.dataset.stf+'"]');if(n)n.innerHTML=stHint(el.value!=='',!!ui.ib.file)}});
+  if(el.dataset&&el.dataset.stf){if(ui.ib.ocr){if(ui.ib.ocr.fields)ui.ib.ocr.fields=ui.ib.ocr.fields.filter(k=>k!==el.dataset.stf);if(ui.ib.ocr.readings)delete ui.ib.ocr.readings[el.dataset.stf]}const n=$('[data-st="'+el.dataset.stf+'"]');if(n)n.innerHTML=stHint(el.value!=='',!!ui.ib.file,el.dataset.stf)}});
 const CH={
   cmpsel(el){ui.cmp[el.dataset.k]=el.value;render()},
   phview(el){ui.ph.view=el.value;ui.ph.a=ui.ph.b=null;render()},
@@ -21,8 +24,7 @@ const CH={
   adj(){save();render()},
   pro(){save();render()},
   ibfile(el){const f=el.files&&el.files[0];el.value='';handleIbFile(f)},
-  ibunits(el){captureIb();const from=ui.ib.units,to=el.value;if(from!==to){const k=from==='kg'?2.20462262:1/2.20462262,f=ui.ib.form;
-      IBF.filter(r=>r[4]==='m').map(r=>r[0]).concat(SEGS.map(s=>'seg_'+s)).forEach(key=>{const v=num(f[key]);if(v!=null)f[key]=String(+(v*k).toFixed(2))});ui.ib.units=to}render()},
+  ibunits(el){captureIb();if(ui.ib.units!==el.value){ui.ib.units=el.value;render()}},
   async photo(el){const file=el.files&&el.files[0];el.value='';if(!file)return;if(!/^image\//.test(file.type)||file.size>12*1048576){toast(t('errFile'),true);return}
     try{const im=await loadImg(file),data=shrink(im,900,.78);D.photos.push({id:uid(),date:today(),view:ui.ph.view,data});
       if(!sset('sf_data_'+CUR.id,D)){D.photos.pop();return}toast(t('photoSaved'));render()}catch(e){toast(t('errFile'),true)}}
@@ -61,21 +63,38 @@ const FORMS={
     save();toast(t('saved'));render()},
   logw(f){const v=Object.fromEntries(new FormData(f)),w=num(v.weight);if(!(w>=30&&w<=300))return errBox(t('errRange',{f:t('weight'),a:'30',b:'300'}));
     const dt=v.date&&v.date<=today()?v.date:today();upsertM(dt,{weight:w},'weight');D.profile.weight=w;save();closeModal();toast(t('saved'));render()},
-  inbody(f){captureIb();const v=Object.fromEntries(new FormData(f)),lb=ui.ib.units==='lb',k=lb?0.45359237:1,out={},seg={};
-    for(const r of IBF){const raw=num(v[r[0]]);if(raw==null)continue;const val=r[4]==='m'?raw*k:raw;
-      if(!(val>=r[2]&&val<=r[3]))return errBox(t('errRange',{f:t(r[1]),a:fmt(r[2]),b:fmt(r[3])}));out[r[0]]=+val.toFixed(2)}
-    for(const s of SEGS){const raw=num(v['seg_'+s]);if(raw==null)continue;const val=raw*k;if(!(val>0&&val<=80))return errBox(t('errRange',{f:t('sg_'+s),a:'0',b:fmt(80)}));seg[s]=+val.toFixed(2)}
+  inbody(f){captureIb();const v=Object.fromEntries(new FormData(f)),lb=ui.ib.units==='lb',out={},seg={};
+    if(!v.date||v.date>today())return errBox(t('errDate'));
+    for(const r of IBF){const text=v[r[0]],raw=num(text);if(text!=null&&String(text).trim()!==''&&raw==null)return errBox(t('errNumber',{f:t(r[1])}));if(raw==null)continue;
+      const val=r[4]==='m'&&lb?raw*LB_TO_KG:raw,factor=r[4]==='m'&&lb?1/LB_TO_KG:1,label=t(r[1])+(r[4]==='m'?' ('+ui.ib.units+')':'');
+      if(!(val>=r[2]&&val<=r[3]))return errBox(t('errRange',{f:label,a:fmt(r[2]*factor,lb&&r[4]==='m'?1:0),b:fmt(r[3]*factor,lb&&r[4]==='m'?1:0)}));out[r[0]]=+val.toFixed(2)}
+    for(const s of SEGS){const key='seg_'+s,text=v[key],raw=num(text);if(text!=null&&String(text).trim()!==''&&raw==null)return errBox(t('errNumber',{f:t('sg_'+s)}));if(raw==null)continue;
+      const val=lb?raw*LB_TO_KG:raw,max=lb?80/LB_TO_KG:80;if(!(val>0&&val<=80))return errBox(t('errRange',{f:t('sg_'+s)+' ('+ui.ib.units+')',a:fmt(lb?0.01/LB_TO_KG:0.01,lb?1:2),b:fmt(max,lb?1:0)}));seg[s]=+val.toFixed(2)}
     if(!Object.keys(out).length&&!Object.keys(seg).length)return errBox(t('errNeed'));
-    const date=v.date&&v.date<=today()?v.date:today();
-    let mismatch=false;if(out.weight&&out.bf!=null&&out.fatMass!=null&&Math.abs(out.fatMass-out.weight*out.bf/100)>1.5)mismatch=true;
-    if(out.weight&&((out.muscle&&out.muscle>out.weight)||(out.fatMass&&out.fatMass>out.weight)))mismatch=true;
-    const old=D.measurements.find(m=>m.date===date);if(old){D.measurements=D.measurements.filter(m=>m!==old);D.reports=D.reports.filter(r=>r.mid!==old.id)}
-    const fileUsed=!!ui.ib.file,m=upsertM(date,Object.assign({seg,mismatch},out),fileUsed?'inbody':'manual');
-    if(fileUsed){const fl=ui.ib.file;D.reports.push({mid:m.id,name:fl.name,type:fl.type,uploaded:today(),data:fl.type==='img'?ibCanvasData():null})}
-    if(out.weight)D.profile.weight=out.weight;if(out.height)D.profile.height=out.height;
-    if(!sset('sf_data_'+CUR.id,D)){const r=D.reports.find(x=>x.mid===m.id);if(r){r.data=null;save()}}
+    const date=v.date,prior=D.measurements.find(m=>m.date===date);
+    const measurementsBefore=D.measurements.map(m=>({object:m,data:Object.assign({},m,{
+      seg:m.seg&&Object.assign({},m.seg),profileSnapshot:m.profileSnapshot&&Object.assign({},m.profileSnapshot)})}));
+    const reportsBefore=D.reports.map(r=>({object:r,data:Object.assign({},r)}));
+    const profileBefore={weight:D.profile.weight,height:D.profile.height},fileUsed=!!ui.ib.file,fl=ui.ib.file;
+    const reportData=fileUsed&&fl.type==='img'?ibCanvasData():null,fields=Object.assign({},out);
+    if(Object.keys(seg).length)fields.seg=Object.assign({},prior&&prior.seg||{},seg);
+    const priorRecords=[...D.measurements].filter(m=>m.date<=date).sort((a,b)=>a.date.localeCompare(b.date));
+    const oldWeight=[...priorRecords].reverse().find(m=>m.weight!=null),oldHeight=[...priorRecords].reverse().find(m=>m.height!=null);
+    const m=upsertM(date,fields,fileUsed?'inbody':'manual');
+    m.source=fileUsed?'inbody':'manual';
+    m.profileSnapshot={age:D.profile.age,gender:D.profile.gender,goal:D.profile.goal,activity:D.profile.activity,
+      weight:m.weight??(oldWeight&&oldWeight.weight)??D.profile.weight,
+      height:m.height??(oldHeight&&oldHeight.height)??D.profile.height,
+      reportAdjustment:D.adj,reportProteinPerKg:D.pro};
+    m.mismatch=measurementMismatch(m);
+    if(fileUsed){let report=D.reports.find(r=>r.mid===m.id);if(!report){report={mid:m.id};D.reports.push(report)}
+      Object.assign(report,{name:fl.name,type:fl.type,uploaded:today(),data:reportData})}
+    if(date===today()){if(out.weight)D.profile.weight=out.weight;if(out.height)D.profile.height=out.height}
+    if(!sset('sf_data_'+CUR.id,D)){
+      D.measurements=measurementsBefore.map(x=>{Object.keys(x.object).forEach(k=>delete x.object[k]);Object.assign(x.object,x.data);return x.object});
+      D.reports=reportsBefore.map(x=>{Object.keys(x.object).forEach(k=>delete x.object[k]);Object.assign(x.object,x.data);return x.object});
+      D.profile.weight=profileBefore.weight;D.profile.height=profileBefore.height;return}
     ui.report=m.id;ui.ib={units:'kg',form:{},file:null};ibImg=null;ui.pend='report';toast(t('savedReport'));render()}
 };
 document.addEventListener('submit',e=>{const f=e.target;if(!f.dataset||!f.dataset.form)return;e.preventDefault();
   const fn=FORMS[f.dataset.form];if(fn){const eb=$('#ferr');if(eb){eb.textContent='';eb.classList.remove('on')}const r=fn(f);if(r&&r.catch)r.catch(()=>errBox(t('errStorage')))}});
-

@@ -14,7 +14,7 @@ lowback:{en:'Lower back',ar:'أسفل الظهر',fe:'Extends the spine and keep
 glutes:{en:'Glutes',ar:'الأرداف',fe:'Extends and rotates the hip.',fa:'تمدّ الورك وتدوّره.'},
 hamstrings:{en:'Hamstrings',ar:'الفخذ الخلفي',fe:'Bends the knee and extends the hip.',fa:'تثني الركبة وتمدّ الورك.'}};
 
-const EQN={barbell:{en:'Barbell',ar:'بار'},bench:{en:'Bench',ar:'بنش'},dumbbell:{en:'Dumbbells',ar:'دمبل'},machine:{en:'Machine',ar:'جهاز'},cable:{en:'Cable',ar:'كابل'},bodyweight:{en:'Bodyweight',ar:'وزن الجسم'},chair:{en:'Chair',ar:'كرسي'},rack:{en:'Rack',ar:'ستاند'}};
+const EQN={barbell:{en:'Barbell',ar:'بار'},bench:{en:'Bench',ar:'بنش'},dumbbell:{en:'Dumbbells',ar:'دمبل'},machine:{en:'Machine',ar:'جهاز'},cable:{en:'Cable',ar:'كابل'},bodyweight:{en:'Bodyweight',ar:'وزن الجسم'},chair:{en:'Chair',ar:'كرسي'},rack:{en:'Rack',ar:'ستاند'},pullupbar:{en:'Pull-up bar',ar:'بار العقلة'}};
 
 const EX={
 bench:{en:'Barbell Bench Press',ar:'ضغط البار على البنش',p:['chest'],s:['triceps','delts'],sets:4,reps:'8–12',rest:90,eq:['barbell','bench'],lvl:1,env:'gym',
@@ -57,9 +57,44 @@ plank:{en:'Plank',ar:'بلانك',p:['abs'],s:['obliques','lowback','delts'],set
  ie:'Forearms on the floor, body in one line. Brace the core and hold without letting the hips sag.',ia:'الساعدان على الأرض والجسم في خط مستقيم. شد البطن واثبت دون هبوط الحوض.',me:'Letting the hips rise or sag.',ma:'ارتفاع الحوض أو هبوطه.'},
 crunch:{en:'Crunch',ar:'كرنش',p:['abs'],s:['obliques'],sets:3,reps:'12–20',rest:45,eq:['bodyweight'],lvl:0,env:'none',
  ie:'Lie on your back with knees bent. Curl the ribs toward the hips, then lower slowly.',ia:'استلقِ على ظهرك وركبتاك مثنيتان. قرّب القفص الصدري من الحوض ثم انزل ببطء.',me:'Pulling on the neck with the hands.',ma:'سحب الرقبة باليدين.'},
-calf:{en:'Standing Calf Raise',ar:'رفع السمانة واقفاً',p:['calves'],s:[],sets:3,reps:'12–20',rest:45,eq:['bodyweight'],lvl:0,env:'none',
- ie:'Stand on the edge of a step. Rise onto the toes, pause, then lower the heels below the step.',ia:'قف على حافة درجة. ارتفع على أصابع القدمين وتوقف ثم اخفض الكعبين تحت مستوى الدرجة.',me:'Bouncing instead of pausing at the top.',ma:'الارتداد بدل التوقف في القمة.'}
+calf:{en:'Standing Calf Raises',ar:'رفع السمانة واقفاً',p:['calves'],s:[],sets:3,reps:'12–20',rest:45,eq:['bodyweight'],lvl:0,env:'none',
+ ie:'Stand tall with the balls of your feet on a step. Lower your heels, then rise onto your toes and pause without bouncing.',ia:'قف مستقيماً مع مقدمة القدم على درجة. اخفض الكعبين ثم ارتفع على أطراف الأصابع وتوقف دون ارتداد.',me:'Using momentum or shortening the controlled range of motion.',ma:'استخدام الزخم أو تقصير مدى الحركة المتحكم به.'},
+fly:{en:'Dumbbell Fly',ar:'تفتيح الصدر بالدمبل',p:['chest'],s:['delts'],sets:3,reps:'10–12',rest:60,eq:['dumbbell','bench'],lvl:1,env:'db',
+ ie:'Lie on a flat bench with a slight bend in each elbow. Open your arms until you feel a comfortable chest stretch, then bring the dumbbells together above your chest.',ia:'استلقِ على بنش مستوٍ مع ثني بسيط للمرفقين. افتح الذراعين حتى تشعر بتمدد مريح للصدر ثم قرّب الدمبل فوقه.',me:'Lowering too far or turning the fly into a press by bending the elbows more.',ma:'النزول أكثر من اللازم أو تحويل التفتيح إلى ضغط بزيادة ثني المرفقين.'},
+seatedrow:{en:'Seated Cable Row',ar:'تجديف بالكابل جلوساً',p:['lats'],s:['traps','biceps','lowback'],sets:3,reps:'10–12',rest:75,eq:['cable','machine'],lvl:1,env:'gym',
+ ie:'Sit tall with a neutral spine. Pull the handle toward your lower ribs by driving your elbows back, then return slowly without rocking.',ia:'اجلس منتصباً مع ظهر محايد. اسحب المقبض نحو أسفل الأضلاع بتحريك المرفقين للخلف ثم عد ببطء دون تأرجح.',me:'Rounding the back or leaning far back to move the weight.',ma:'تقويس الظهر أو الميل للخلف كثيراً لتحريك الوزن.'},
+pullup:{en:'Pull-Up',ar:'عقلة',p:['lats'],s:['biceps','traps'],sets:3,reps:'6–10',rest:90,eq:['pullupbar'],lvl:2,env:'gym',
+ ie:'Hang from a secure bar with an overhand grip. Pull your chest toward the bar with your elbows moving down, then lower under control to a full hang.',ia:'تعلّق بقبضة علوية من بار ثابت. اسحب صدرك نحو البار مع توجيه المرفقين للأسفل ثم انزل بتحكم حتى التعلق الكامل.',me:'Kipping or shortening the lowering phase instead of controlling each repetition.',ma:'استخدام التأرجح أو اختصار مرحلة النزول بدلاً من التحكم بكل تكرار.'},
+frontraise:{en:'Dumbbell Front Raise',ar:'رفع أمامي بالدمبل',p:['delts'],s:['chest','traps'],sets:3,reps:'10–15',rest:60,eq:['dumbbell'],lvl:0,env:'db',
+ ie:'Stand with light dumbbells in front of your thighs. Raise one or both arms to shoulder height with a soft elbow, then lower slowly.',ia:'قف مع دمبل خفيف أمام الفخذين. ارفع ذراعاً أو الذراعين حتى مستوى الكتف مع ثني بسيط للمرفق ثم اخفض ببطء.',me:'Swinging the torso or raising the weights above shoulder height.',ma:'تأرجح الجذع أو رفع الأوزان فوق مستوى الكتف.'},
+reversefly:{en:'Dumbbell Reverse Fly',ar:'تفتيح خلفي بالدمبل',p:['delts'],s:['traps'],sets:3,reps:'12–15',rest:60,eq:['dumbbell'],lvl:1,env:'db',
+ ie:'Hinge at the hips with a flat back. With elbows softly bent, raise the dumbbells out to the sides, squeeze the rear shoulders, and lower slowly.',ia:'انحنِ من الورك مع ظهر مستقيم. ارفع الدمبل جانباً مع ثني خفيف للمرفقين، واضغط عضلات الكتف الخلفية ثم اخفض ببطء.',me:'Rounding the back or using momentum instead of moving the arms under control.',ma:'تقويس الظهر أو استخدام الزخم بدلاً من تحريك الذراعين بتحكم.'},
+hammercurl:{en:'Hammer Curl',ar:'ثني المطرقة بالدمبل',p:['biceps'],s:['forearms'],sets:3,reps:'10–12',rest:60,eq:['dumbbell'],lvl:0,env:'db',
+ ie:'Stand tall with palms facing inward. Curl the dumbbells without moving your elbows, then lower under control.',ia:'قف مستقيماً مع توجيه راحتي اليدين للداخل. اثنِ المرفقين لرفع الدمبل دون تحريكهما ثم اخفض بتحكم.',me:'Swinging the weights or letting the elbows drift forward.',ma:'تأرجح الأوزان أو تحريك المرفقين للأمام.'},
+preachercurl:{en:'Preacher Curl',ar:'ثني البايسبس على مسند',p:['biceps'],s:['forearms'],sets:3,reps:'10–12',rest:60,eq:['dumbbell','bench'],lvl:1,env:'gym',
+ ie:'Brace your upper arms against the preacher pad. Curl the bar or dumbbells without lifting your elbows, then lower slowly before the elbows lock.',ia:'ثبّت أعلى الذراعين على مسند البايسبس. ارفع البار أو الدمبل دون رفع المرفقين ثم اخفض ببطء قبل قفل المرفق.',me:'Bouncing out of the bottom or lifting the upper arms off the pad.',ma:'الارتداد من أسفل الحركة أو رفع أعلى الذراعين عن المسند.'},
+overheadtri:{en:'Overhead Triceps Extension',ar:'مدّ الترايسبس فوق الرأس',p:['triceps'],s:['delts'],sets:3,reps:'10–12',rest:60,eq:['dumbbell'],lvl:1,env:'db',
+ ie:'Hold one dumbbell overhead with elbows pointing forward. Bend the elbows to lower it behind your head, then extend without flaring the elbows.',ia:'أمسك دمبلاً فوق الرأس مع توجيه المرفقين للأمام. اثنِ المرفقين لإنزال الوزن خلف الرأس ثم افردهما دون فتحهما للخارج.',me:'Arching the lower back or allowing the elbows to flare widely.',ma:'تقويس أسفل الظهر أو فتح المرفقين كثيراً للخارج.'},
+skullcrusher:{en:'Skull Crushers',ar:'مدّ الترايسبس مستلقياً',p:['triceps'],s:['delts'],sets:3,reps:'8–12',rest:75,eq:['dumbbell','bench'],lvl:1,env:'db',
+ ie:'Lie on a bench and hold dumbbells above your shoulders. Keep upper arms steady, bend the elbows to lower the weights beside your head, then extend.',ia:'استلقِ على بنش وأمسك الدمبل فوق الكتفين. ثبّت أعلى الذراعين واثنِ المرفقين لإنزال الوزن بجانب الرأس ثم افردهما.',me:'Moving the upper arms excessively or lowering the weights toward the face.',ma:'تحريك أعلى الذراعين كثيراً أو إنزال الأوزان باتجاه الوجه.'},
+legextension:{en:'Leg Extension',ar:'مدّ الأرجل على الجهاز',p:['quads'],s:[],sets:3,reps:'10–15',rest:60,eq:['machine'],lvl:0,env:'gym',
+ ie:'Sit with your knees aligned to the machine pivot and the pad above your ankles. Extend the knees smoothly, pause, then lower slowly.',ia:'اجلس مع محاذاة الركبتين لمحور الجهاز والوسادة فوق الكاحلين. افرد الركبتين بسلاسة وتوقف ثم اخفض ببطء.',me:'Using momentum or locking the knees forcefully at the top.',ma:'استخدام الزخم أو قفل الركبتين بقوة في أعلى الحركة.'},
+legcurl:{en:'Leg Curl',ar:'ثني الأرجل على الجهاز',p:['hamstrings'],s:['calves'],sets:3,reps:'10–15',rest:60,eq:['machine'],lvl:0,env:'gym',
+ ie:'Align your knees with the machine pivot and place the pad just above your heels. Curl smoothly, pause, and return with control.',ia:'حاذِ الركبتين مع محور الجهاز وضع الوسادة فوق الكعبين. اثنِ الساقين بسلاسة وتوقف ثم عد بتحكم.',me:'Lifting the hips off the pad or letting the weight drop.',ma:'رفع الحوض عن الوسادة أو ترك الوزن يهبط بسرعة.'},
+hangingleg:{en:'Hanging Leg Raises',ar:'رفع الساقين معلقاً',p:['abs'],s:[],sets:3,reps:'8–12',rest:75,eq:['pullupbar'],lvl:2,env:'gym',
+ ie:'Hang from a secure bar and brace your core. Raise your legs without swinging, then lower slowly while keeping control of your trunk.',ia:'تعلّق ببار ثابت وشد عضلات الجذع. ارفع الساقين دون تأرجح ثم اخفضهما ببطء مع تثبيت الجذع.',me:'Swinging the body to generate momentum or arching the lower back.',ma:'تأرجح الجسم لاستخدام الزخم أو تقويس أسفل الظهر.'}
 };
+
+const EXERCISE_VIDEOS={
+  bench:'rT7DgCr-3pg',incdb:'8iPEnn-ltC8',fly:'eozdVDA78K0',pushup:'IODxDxX7oi4',
+  pulldown:'CAwf7n6Luuc',seatedrow:'GZbfZ033f74',row:'vT2GjY_Umpw',pullup:'ylVmNQlKdAI',
+  ohp:'qEwKCR5JCog',lateral:'3VcKaXpzqRo',frontraise:'-t7fuZ0KhDA',reversefly:'JoCRRZ3zRtI',
+  curl:'ykJmrZ5v0Oo',hammercurl:'zC3nLlEvin4',preachercurl:'3YUIUnWsV2s',
+  pushdown:'2-LAMcpzODU',overheadtri:'-Vyt2QdsR7E',skullcrusher:'d_KZxkY_0cM',
+  squat:'ultWZbUMPL8',legpress:'8EMbB0tCn7Q',legextension:'YyvSfVjQeL0',legcurl:'F488k67BTNo',
+  rdl:'JCXUYuzwNrM',calf:'YMmgqO8Jo-k',plank:'pSHjTRCQxIw',crunch:'Xyd_fa5zoEU',hangingleg:'Pr1ieGZ5atk'
+};
+const EX_LIBRARY=['bench','incdb','fly','pushup','pulldown','seatedrow','row','pullup','ohp','lateral','frontraise','reversefly','curl','hammercurl','preachercurl','pushdown','overheadtri','skullcrusher','squat','legpress','legextension','legcurl','rdl','calf','plank','crunch','hangingleg'];
 
 const PROGRAMS={
 beginner:{en:'Beginner Fitness',ar:'لياقة للمبتدئين',tags:['beginner','gym'],env:'gym',days:[
@@ -98,3 +133,22 @@ noequip:{en:'No Equipment Workouts',ar:'تمارين بدون معدات',tags:[
  {en:'Bodyweight B',ar:'وزن الجسم ب',ex:['dip','calf','crunch','pushup','bwsquat']}]}
 };
 
+const EX_CATEGORY={chest:'chest',lats:'back',traps:'back',lowback:'back',delts:'shoulders',biceps:'biceps',triceps:'triceps',forearms:'arms',abs:'core',obliques:'core',quads:'legs',calves:'legs',glutes:'legs',hamstrings:'legs'};
+Object.keys(EX).forEach(id=>{
+  const e=EX[id];
+  e.id=id;
+  e.category=EX_CATEGORY[e.p[0]]||'legs';
+  e.youtubeId=EXERCISE_VIDEOS[id]||'';
+  e.primaryMuscles=e.p;
+  e.secondaryMuscles=e.s;
+  e.equipment=e.eq;
+  e.repetitions=e.reps;
+  e.restDuration=e.rest;
+  e.difficulty=e.lvl;
+  e.instructions={en:e.ie,ar:e.ia};
+});
+const EX_VIEW_BACK=new Set(['lats','traps','lowback','glutes','hamstrings','triceps']);
+Object.keys(EX).forEach(id=>{
+  const targets=[...EX[id].p,...EX[id].s];
+  EX[id].view=targets.every(m=>EX_VIEW_BACK.has(m))?'back':targets.some(m=>EX_VIEW_BACK.has(m))?'both':'front';
+});

@@ -80,19 +80,57 @@ input:focus,select:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-
    Anatomy: layered muscle rendering (base · volume shade · fibre texture)
    ===================================================================== */
 .anat{gap:6px}
-.anat figure{flex:1 1 170px;max-width:270px}
-.anat svg{filter:drop-shadow(0 12px 18px rgba(0,0,0,.35))}
-.sil{fill:color-mix(in srgb,var(--sil) 80%,#000);stroke:color-mix(in srgb,var(--fg) 14%,transparent);stroke-width:.8}
-.m{stroke:color-mix(in srgb,#000 55%,var(--sil));stroke-width:.7;stroke-linejoin:round}
-.m.d{fill:color-mix(in srgb,var(--base) 60%,var(--sil));cursor:default}
+.anat figure{flex:1 1 170px;max-width:320px}
+.anat svg{filter:drop-shadow(0 10px 12px color-mix(in srgb,var(--anat-shadow) 30%,transparent))}
+.sil{fill:var(--anat-body);stroke:var(--anat-outline);stroke-opacity:.55;stroke-width:.9}
+.m{fill:var(--anat-muscle);stroke:var(--anat-outline);stroke-opacity:.8;stroke-width:.85;stroke-linejoin:round}
+.m:not(.p):not(.s):not(.d){fill:var(--anat-muscle)}
+.m.d{fill:var(--anat-context);cursor:default}
 .m.p{filter:drop-shadow(0 0 3px var(--glow))}
 .m.sel{stroke:var(--fg);stroke-width:1.5}
 .sh,.fb{pointer-events:none;stroke:none}
 .sh{fill:url(#anSh)}
-.absl{stroke:color-mix(in srgb,var(--fg) 20%,transparent);stroke-width:.8;stroke-linecap:round;stroke-linejoin:round;fill:none;pointer-events:none}
+.absl{stroke:var(--anat-detail);stroke-opacity:.72;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round;fill:none;pointer-events:none}
 .absl.sp{stroke-dasharray:.1 4.4;stroke-width:2.4}
-ellipse.absl{fill:color-mix(in srgb,var(--fg) 14%,transparent);stroke:none}
+ellipse.absl{fill:var(--anat-detail);fill-opacity:.32;stroke:none}
 .legend i{border-radius:0;transform:skewX(-12deg)}
+
+:root[data-theme="light"] .anat svg{filter:none}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .anat svg{filter:none}}
+:root[data-theme="light"] .card{box-shadow:var(--surface-shadow)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .card{box-shadow:var(--surface-shadow)}}
+:root[data-theme="light"] .pubhead{background:color-mix(in srgb,var(--bg) 92%,transparent)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .pubhead{background:color-mix(in srgb,var(--bg) 92%,transparent)}}
+
+#sec-anatomy .anatomy-showcase{grid-template-columns:minmax(230px,.72fr) minmax(0,1.28fr);align-items:stretch;gap:24px}
+#sec-anatomy .anatomy-panel{padding:clamp(16px,2vw,26px)}
+@media(max-width:760px){#sec-anatomy .anatomy-showcase{grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:600px){
+  .pubhead .wrap{min-height:58px;gap:8px}
+  .pubhead .logo{gap:6px}
+  .pubhead .row.gap-s{gap:4px}
+  .pubhead .btn.sm{padding-inline:8px;font-size:12px}
+  .hero{padding-block:30px 24px;gap:28px;overflow-x:clip}
+  .hero h1{font-size:clamp(2.2rem,10vw,3rem);line-height:1}
+  .lead{font-size:1rem;margin-top:14px}
+  .hero>div:first-child>.row[style*="margin-top"]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .hero>div:first-child>.row[style*="margin-top"] .btn{width:100%;min-width:0;white-space:normal;text-align:center;padding-inline:8px}
+  .hero>div:first-child>.row[style*="margin-top"] .btn.red{grid-column:1/-1}
+  .hero .vis{padding-inline:8px}
+  .hero .vis>.card{padding:16px}
+  .hero .vis>.card>.row.nw{gap:12px!important}
+  .hero .float{max-width:45%;padding:6px 8px}
+  .section{padding-block:40px}
+  .stats{gap:12px}
+  .stat .num{font-size:2rem}
+  .card{padding:16px}
+  .tbl{font-size:13px}
+}
+@media(max-width:380px){
+  .hero .vis>.card>.row.nw{flex-wrap:wrap!important;justify-content:center}
+  .hero .vis>.card>.row.nw>.col{flex-basis:100%}
+}
 
 /* =====================================================================
    Logo lockups (vector) · scroll progress · pillars · active nav
@@ -109,6 +147,18 @@ ellipse.absl{fill:color-mix(in srgb,var(--fg) 14%,transparent);stroke:none}
 #splash .lk{animation:spl 1.1s cubic-bezier(.2,.7,.2,1) both}
 #splash .lk-w{color:#c5c7ca}
 .logo .lm{height:38px;width:auto}
+:root[data-theme="light"]{
+  --logo-iron-hi:#64748b;--logo-iron-mid:#475569;--logo-iron-low:#334155;
+  --logo-wordmark:#344054;--logo-tag:#475467
+}
+@media(prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --logo-iron-hi:#64748b;--logo-iron-mid:#475569;--logo-iron-low:#334155;
+    --logo-wordmark:#344054;--logo-tag:#475467
+  }
+}
+.wordmark,.lk-w{color:var(--logo-wordmark,var(--silver))}
+.lk-t{color:var(--logo-tag,var(--muted))}
 
 #sp{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--red);z-index:300;pointer-events:none}
 [dir="rtl"] #sp{transform-origin:100% 50%;left:auto;right:0}
