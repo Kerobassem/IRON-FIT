@@ -10,7 +10,7 @@ function sdel(k){try{if(LS)localStorage.removeItem(k)}catch(e){}delete mem[k]}
 let ACC=sget('sf_users')||[],CUR=null,D=null;
 let PREF=Object.assign({lang:/^ar/i.test(navigator.language||'')?'ar':'en',theme:'system',sounds:false},sget('sf_prefs')||{});
 let LANG=PREF.lang==='ar'?'ar':'en';
-const ui={ndate:null,range:'30',metric:'weight',view:'both',muscle:null,notif:false,demoEx:'bench',ob:null,ib:{units:'kg',form:{}},add:null,wp:null,wd:null,wex:null,libex:null,libcat:'all',cmp:{},ph:{view:'front'},delArm:false,forgot:false};
+const ui={ndate:null,range:'30',metric:'weight',view:'both',muscle:null,notif:false,demoEx:'bench',ob:null,ib:{units:'kg',form:{}},add:null,wp:null,wd:null,wex:null,libex:null,libcat:'all',cmp:{},ph:{view:'front'},delArm:false,forgot:false,collapsedExercises:{},animateDetail:false};
 
 const loc=()=>LANG==='ar'?'ar-EG':'en-US';
 const t=(k,v)=>{let s=(T[LANG]&&T[LANG][k]);if(s==null)s=T.en[k];if(s==null)s=k;if(v)for(const x in v)s=s.split('{'+x+'}').join(v[x]);return s};

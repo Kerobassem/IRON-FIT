@@ -26,3 +26,91 @@ const _ws=A.wset;A.wset=function(e,ev){const id=e.dataset.ex,i=+e.dataset.i;_ws(
 document.addEventListener('pointermove',e=>{if(RM)return;const l=e.target.closest&&e.target.closest('.logoglow');const img=document.querySelector('.herologo');if(!img)return;
   if(l){const b=img.getBoundingClientRect(),x=(e.clientX-b.left)/b.width-.5,y=(e.clientY-b.top)/b.height-.5;img.style.animation='none';img.style.transform=`perspective(700px) rotateY(${x*18}deg) rotateX(${-y*18}deg) scale(1.04)`}
   else if(img.style.transform){img.style.transform='';img.style.animation=''}});
+
+/* mobile pull-to-refresh: redraw the current view from the current app state */
+const pullRefresh=document.createElement('div'),pullSpinner=document.createElement('span'),pullLabel=document.createElement('span');
+pullRefresh.className='pull-refresh';pullRefresh.setAttribute('role','status');pullRefresh.setAttribute('aria-live','polite');pullSpinner.className='pull-spinner';pullSpinner.setAttribute('aria-hidden','true');pullRefresh.append(pullSpinner,pullLabel);document.body.appendChild(pullRefresh);
+let pullGesture=null,pullRefreshTimer=null;
+function resetPullGesture(){
+  const main=$('.main');if(main){main.style.transition='transform .24s cubic-bezier(.16,1,.3,1)';main.style.transform=''}
+  pullRefresh.classList.remove('visible','refreshing');pullRefresh.style.removeProperty('--pull-offset');pullGesture=null;
+}
+document.addEventListener('touchstart',e=>{
+  if(!matchMedia('(max-width: 919px)').matches||window.scrollY>0||!$('.main')||!e.touches.length)return;
+  if(e.target.closest('button,a,input,select,textarea,[contenteditable="true"],.exercise-list,.scroll'))return;
+  pullGesture={startY:e.touches[0].clientY,distance:0};
+},{passive:true});
+document.addEventListener('touchmove',e=>{
+  if(!pullGesture||!e.touches.length)return;
+  const distance=e.touches[0].clientY-pullGesture.startY;if(distance<=0){resetPullGesture();return}
+  pullGesture.distance=Math.min(distance,140);
+  const offset=pullGesture.distance*.35,main=$('.main');
+  if(main){main.style.transition='none';main.style.transform=`translateY(${offset}px)`}
+  pullRefresh.style.setProperty('--pull-offset',`${offset}px`);pullRefresh.classList.add('visible');
+  pullLabel.textContent=pullGesture.distance>=80?t('pullReady'):t('pullDown');
+  if(e.cancelable)e.preventDefault();
+},{passive:false});
+document.addEventListener('touchend',()=>{
+  if(!pullGesture)return;
+  const refresh=pullGesture.distance>=80;
+  if(!refresh){resetPullGesture();return}
+  clearTimeout(pullRefreshTimer);pullLabel.textContent=t('pullRefreshing');pullRefresh.classList.add('refreshing');
+  const main=$('.main');if(main){main.style.transition='transform .24s cubic-bezier(.16,1,.3,1)';main.style.transform=''}
+  render();pullRefreshTimer=setTimeout(resetPullGesture,520);
+},{passive:true});
+document.addEventListener('touchcancel',resetPullGesture,{passive:true});
+
+/* pointer + keyboard sorting for the selected workout day's exercise cards */
+let sorting=null;
+function sortedExerciseCards(list){return Array.from(list.children).filter(child=>child.matches('.excard'))}
+function saveExerciseOrder(list,focusId){
+  if(!D||!list.isConnected)return;
+  const program=list.dataset.program,day=Number(list.dataset.day);
+  if(program!==curProgId()||!Number.isInteger(day)||!PROGRAMS[program]||!PROGRAMS[program].days[day])return;
+  const cards=sortedExerciseCards(list);
+  D.workoutOrders=D.workoutOrders||{};D.workoutOrders[program+':'+day]=cards.map(card=>card.dataset.exerciseId);save();
+  cards.forEach((card,index)=>{const handle=card.querySelector('.drag-handle');if(handle)handle.setAttribute('aria-label',t('reorderExercise',{name:bi(EX[card.dataset.exerciseId]),position:fmt(index+1),total:fmt(cards.length)}))});
+  if(focusId)list.querySelector(`[data-sort-handle="${focusId}"]`)?.focus();
+}
+document.addEventListener('pointerdown',e=>{
+  const handle=e.target.closest&&e.target.closest('.drag-handle'),card=handle&&handle.closest('.excard'),list=card&&card.closest('[data-sort-list]');
+  if(!handle||!card||!list||e.button!==0)return;
+  sorting={handle,card,list,pointerId:e.pointerId,startY:e.clientY,moved:false,originalCards:sortedExerciseCards(list)};
+  if(e.pointerType==='touch'&&handle.setPointerCapture)handle.setPointerCapture(e.pointerId);
+});
+document.addEventListener('pointermove',e=>{
+  if(!sorting||e.pointerId!==sorting.pointerId)return;
+  if(!sorting.moved&&Math.abs(e.clientY-sorting.startY)<6)return;
+  sorting.moved=true;e.preventDefault();sorting.card.classList.add('is-dragging');
+  const siblings=sortedExerciseCards(sorting.list).filter(card=>card!==sorting.card);
+  const previousTops=new Map(siblings.map(card=>[card,card.getBoundingClientRect().top]));
+  const target=siblings.find(card=>e.clientY<card.getBoundingClientRect().top+card.getBoundingClientRect().height/2);
+  const before=target||null;
+  if((before&&sorting.card.nextElementSibling!==before)||(!before&&sorting.card!==sorting.list.lastElementChild)){
+    sorting.list.insertBefore(sorting.card,before);
+    if(!RM)sortedExerciseCards(sorting.list).filter(card=>card!==sorting.card).forEach(card=>{
+      card.getAnimations().filter(animation=>animation.id==='exercise-reorder').forEach(animation=>animation.cancel());
+      const offset=previousTops.get(card)-card.getBoundingClientRect().top;
+      if(Math.abs(offset)>1&&typeof card.animate==='function'){const animation=card.animate([{transform:`translateY(${offset}px)`},{transform:'translateY(0)'}],{duration:350,easing:'cubic-bezier(.16,1,.3,1)'});animation.id='exercise-reorder'}
+    });
+  }
+},{passive:false});
+document.addEventListener('pointerup',e=>{
+  if(!sorting||e.pointerId!==sorting.pointerId)return;
+  const state=sorting;sorting=null;state.card.classList.remove('is-dragging');
+  if(state.moved)saveExerciseOrder(state.list,state.card.dataset.exerciseId);
+});
+document.addEventListener('pointercancel',e=>{
+  if(!sorting||e.pointerId!==sorting.pointerId)return;
+  const state=sorting;sorting=null;state.card.classList.remove('is-dragging');
+  state.list.querySelectorAll('.excard').forEach(card=>card.getAnimations().filter(animation=>animation.id==='exercise-reorder').forEach(animation=>animation.cancel()));
+  state.originalCards.forEach(card=>state.list.appendChild(card));
+});
+document.addEventListener('keydown',e=>{
+  const handle=e.target.closest&&e.target.closest('.drag-handle');
+  if(!handle||(e.key!=='ArrowUp'&&e.key!=='ArrowDown'))return;
+  const card=handle.closest('.excard'),list=card&&card.closest('[data-sort-list]');if(!card||!list)return;
+  const cards=sortedExerciseCards(list),index=cards.indexOf(card),next=cards[index+(e.key==='ArrowUp'?-1:1)];
+  e.preventDefault();if(!next)return;
+  list.insertBefore(card,e.key==='ArrowUp'?next:next.nextElementSibling);saveExerciseOrder(list,card.dataset.exerciseId);
+});

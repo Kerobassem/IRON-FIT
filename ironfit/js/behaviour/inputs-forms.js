@@ -46,7 +46,7 @@ const FORMS={
   async signup(f){const v=Object.fromEntries(new FormData(f)),name=(v.name||'').trim(),email=(v.email||'').trim().toLowerCase();
     if(name.length<2)return errBox(t('errName'));if(!EMAIL.test(email))return errBox(t('errEmail'));if((v.password||'').length<8)return errBox(t('errPw'));
     if(v.password!==v.confirm)return errBox(t('errMatch'));if(!v.terms)return errBox(t('errTerms'));if(ACC.some(a=>a.email===email))return errBox(t('errExists'));
-    const a={id:uid(),name,email,hash:await sha(email+':'+v.password)};ACC.push(a);saveAcc();setSession(a.id,true);loadUser(a.id);save();ui.ob=null;go('onboarding')},
+    const a={id:uid(),name,email,hash:await sha(email+':'+v.password)};ACC.push(a);saveAcc();setSession(a.id,true);loadUser(a.id);D.profile.anatomyPreference=['male','female','choose'].includes(v.anatomyPreference)?v.anatomyPreference:null;save();ui.ob=null;go('onboarding')},
   async login(f){const v=Object.fromEntries(new FormData(f)),email=(v.email||'').trim().toLowerCase();
     if(!EMAIL.test(email))return errBox(t('errEmail'));if(!v.password)return errBox(t('errPw'));
     const a=ACC.find(x=>x.email===email&&!x.demo);if(!a||a.hash!==await sha(email+':'+v.password))return errBox(t('errCreds'));

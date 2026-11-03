@@ -4,6 +4,7 @@ const A={
   lang(){setPrefs({lang:LANG==='ar'?'en':'ar'})},
   settheme(e){setPrefs({theme:e.dataset.v})},
   setlang(e){setPrefs({lang:e.dataset.v})},
+  setanatomy(e){if(!['male','female'].includes(e.dataset.v))return;D.profile.anatomyPreference=e.dataset.v;ui.muscle=null;save();render()},
   soundToggle(){const sounds=!PREF.sounds;setPrefs({sounds});if(sounds)playUiSound('notice')},
   soundTest(){playUiSound('notice')},
   scroll(e){const id=e.dataset.to;if(route()!=='home'){ui.pend=id;go('home');return}const n=document.getElementById(id);n&&n.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})},
@@ -28,17 +29,18 @@ const A={
   ldel(e){const dt=ui.ndate||today();D.logs[dt]=(D.logs[dt]||[]).filter(x=>x.id!==e.dataset.id);save();render()},
   closem(){closeModal()},
   ndate(e){const n=addDays(ui.ndate||today(),+e.dataset.d);ui.ndate=n>today()?today():n;render()},
-  startw(){ui.wd=null;ui.wex=null;go('workouts')},
-  wprog(e){ui.wp=e.dataset.id;D.profile.programId=e.dataset.id;ui.wd=null;ui.wex=null;ui.libex=null;D.wip=null;save();render()},
-  wday(e){ui.wd=+e.dataset.i;ui.wex=null;ui.libex=null;ui.muscle=null;render()},
+  startw(){ui.wd=null;ui.wex=null;ui.collapsedExercises={};go('workouts')},
+  wprog(e){ui.wp=e.dataset.id;D.profile.programId=e.dataset.id;ui.wd=null;ui.wex=null;ui.libex=null;ui.collapsedExercises={};D.wip=null;save();render()},
+  wday(e){ui.wd=+e.dataset.i;ui.wex=null;ui.libex=null;ui.muscle=null;ui.collapsedExercises={};render()},
+  toggleExercise(e){const id=e.dataset.id;ui.collapsedExercises[id]=!ui.collapsedExercises[id];render()},
   wset(e){const w=getWip(),id=e.dataset.ex,i=+e.dataset.i,a=w.sets[id]||(w.sets[id]=[]);for(let k=0;k<EX[id].sets;k++)a[k]=!!a[k];a[i]=!a[i];playUiSound(a[i]?'success':'tap');save();render()},
   exsel(e){const id=e.dataset.id;ui.muscle=null;playUiSound('tap');
     if(route()==='home'){ui.demoEx=id;render();return}
     const pid=curProgId(),days=PROGRAMS[pid].days,di=days.findIndex(d=>d.ex.includes(id));
     if(di<0){toast(t('notInProg'),true);return}
-    const cur=ui.wd!=null?ui.wd:nextDay(pid);if(di!==cur)ui.wd=di;ui.wex=id;ui.libex=null;ui.view=EX[id].view;render()},
+    const cur=ui.wd!=null?ui.wd:nextDay(pid);if(di!==cur)ui.wd=di;ui.wex=id;ui.libex=null;ui.view=EX[id].view;ui.animateDetail=true;render()},
   libfilter(e){ui.libcat=e.dataset.category;render()},
-  libexsel(e){const id=e.dataset.id;if(!EX_LIBRARY.includes(id)){toast(t('exerciseMissing'),true);return}playUiSound('tap');ui.libex=id;ui.muscle=null;ui.view=EX[id].view;ui.pend='exercise-detail-card';render()},
+  libexsel(e){const id=e.dataset.id;if(!EX_LIBRARY.includes(id)){toast(t('exerciseMissing'),true);return}playUiSound('tap');ui.libex=id;ui.muscle=null;ui.view=EX[id].view;ui.pend='exercise-detail-card';ui.animateDetail=true;render()},
   view(e){ui.view=e.dataset.v;render()},
   muscle(e){ui.muscle=ui.muscle===e.dataset.id?null:e.dataset.id;render()},
   wfinish(){const pid=curProgId(),prog=PROGRAMS[pid],di=clamp(ui.wd!=null?ui.wd:nextDay(pid),0,prog.days.length-1),day=prog.days[di],w=getWip();
