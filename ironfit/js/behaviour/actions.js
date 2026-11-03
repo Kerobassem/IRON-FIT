@@ -67,7 +67,9 @@ function obCap(){$$('[data-ob]').forEach(i=>{const v=num(i.value);if(v!=null)ui.
 document.addEventListener('click',e=>{
   if(ui.notif&&!e.target.closest('.notif')){ui.notif=false;if(D)render()}
   if(e.target.classList&&e.target.classList.contains('modal')){closeModal();return}
-  const el=e.target.closest('[data-act]');if(!el)return;const f=A[el.dataset.act];if(f){f(el,e)}});
+  const el=e.target.closest('[data-act]');if(!el)return;
+  if(el.matches('button, [role="button"], a'))e.preventDefault();
+  const f=A[el.dataset.act];if(f){if(typeof playUiSound==='function' && !el.closest('[data-act="soundToggle"]'))playUiSound('tap');f(el,e)} });
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){if($('#modal').innerHTML)closeModal();else if(ui.notif){ui.notif=false;render()}return}
   if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('[data-act][role=button],[data-act][role=link]')){e.preventDefault();e.target.click()}});
