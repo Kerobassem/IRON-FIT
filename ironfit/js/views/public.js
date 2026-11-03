@@ -5,7 +5,9 @@ const route=()=>{const r=(location.hash||'').replace(/^#/,'');return[...PUB,...A
 const NAV=[['dashboard','home','nav_dashboard'],['inbody','scan','nav_inbody'],['nutrition','food','nav_nutrition'],['workouts','dumb','nav_workouts'],['progress','chart','nav_progress'],['profile','user','nav_profile'],['app-settings','gear','nav_settings']];
 const BNAV=['dashboard','nutrition','workouts','progress','profile'];
 const fld=(id,label,type,val,attrs)=>{const extra=attrs||'',customName=extra.match(/(?:^|\s)name="([^"]*)"/),rest=extra.replace(/(?:^|\s)name="[^"]*"/,' ');
-  return`<div class="fld"><label class="lbl" for="${id}">${label}</label><input id="${id}" name="${esc(customName?customName[1]:id)}" type="${type}" value="${esc(val==null?'':val)}" ${rest}></div>`};
+  const input=`<input id="${id}" name="${esc(customName?customName[1]:id)}" type="${type}" value="${esc(val==null?'':val)}" ${rest}>`;
+  const control=type==='password'?`<div class="password-control">${input}<button type="button" class="password-toggle" data-act="togglePassword" data-for="${id}" aria-controls="${id}" aria-label="${t('showPassword')}" title="${t('showPassword')}">${ico('eye',18)}</button></div>`:input;
+  return`<div class="fld"><label class="lbl" for="${id}">${label}</label>${control}</div>`};
 const arr=()=>`<span class="flip" style="display:inline-flex">${ico('arrow',18)}</span>`;
 const tools=()=>`<button class="btn ghost icon sm" data-act="theme" aria-label="${t('themeT')}: ${t('theme_'+PREF.theme)}" title="${t('theme_'+PREF.theme)}">${ico(PREF.theme==='light'?'sun':'moon',18)}</button><button class="btn ghost sm" data-act="lang" aria-label="${t('langT')}">${ico('globe',18)}<span>${LANG==='ar'?'EN':'عربي'}</span></button>`;
 const modalWrap=(title,body)=>`<div class="modal"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="row sb nw"><h3>${esc(title)}</h3><button class="btn icon sm ghost" data-act="closem" aria-label="${t('close')}">${ico('x',18)}</button></div>${body}</div></div>`;

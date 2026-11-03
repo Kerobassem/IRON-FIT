@@ -2,4 +2,9 @@
 .auth{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;min-height:calc(100vh - 64px)}
 .auth .side-art{padding:48px 40px;background:linear-gradient(160deg,var(--red-soft),transparent 60%),var(--bg-2);border-inline-end:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:20px}
 .auth .form{padding:48px 40px;display:flex;flex-direction:column;justify-content:center;max-width:520px;width:100%;margin-inline:auto}
-
+.password-control{position:relative}
+.password-control>input{padding-inline-end:44px}
+.password-control .password-toggle{position:absolute;inset-inline-end:5px;top:50%;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;transform:translateY(-50%);border:0;background:transparent;color:var(--muted);cursor:pointer}
+.password-control .password-toggle:hover{color:var(--fg)}
+.password-control .password-toggle:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+.password-control .password-toggle:active{transform:translateY(-50%)}

@@ -10,6 +10,7 @@ const A={
   scroll(e){const id=e.dataset.to;if(route()!=='home'){ui.pend=id;go('home');return}const n=document.getElementById(id);n&&n.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})},
   demo(){startDemo()},
   forgot(){ui.forgot=true;render()},
+  togglePassword(e){const input=document.getElementById(e.dataset.for);if(!input)return;const visible=input.type==='password';input.type=visible?'text':'password';const label=t(visible?'hidePassword':'showPassword');e.setAttribute('aria-label',label);e.title=label;e.innerHTML=ico(visible?'eyeOff':'eye',18)},
   contact(){toast(t('contactNote'))},
   demoex(e){ui.demoEx=e.dataset.id;ui.muscle=null;render()},
   notif(){if(!ui.notif)playUiSound('notice');ui.notif=!ui.notif;render()},
